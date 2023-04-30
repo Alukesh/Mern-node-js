@@ -4,10 +4,10 @@ import multer from 'multer';
 import mongoose from 'mongoose';
 
 import { registerValidation, loginValidation, postCreateValidation } from './validations.js'
-import { handleValidationErrors} from './utils/insex.js'
+import { handleValidationErrors } from './utils/insex.js'
 
 
-import { UserController, PostController} from './controllers/index.js';
+import { UserController, PostController } from './controllers/index.js';
 
 import CheckAuth from './middleware/CheckAuth.js';
 mongoose.connect(process.env.MONGODB_URI).then(() => console.log('DB ok'))
@@ -17,30 +17,26 @@ const app = express();
 const cors = require("cors");
 app.use(express.json())
 app.use('/uploads', express.static('uploads'))
-const corsOpts = {
-    origin: '*',
-    methods: [
-      'GET',
-      'POST',
-      'PATCH',
-      'DELETE',
-    ],
-    allowedHeaders: [
-      'Content-Type',
-    ],
-  };
-  app.use(cors(corsOpts))
-  app.use((req, res, next) => {
+
+app.use(cors({
+    'allowedHeaders': ['sessionId', 'Content-Type'],
+    'exposedHeaders': ['sessionId'],
+    'origin': '*',
+    'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    'preflightContinue': false
+}))
+//   app.options('*', cors());
+app.use((req, res, next) => {
     //allow access from every, elminate CORS
-    res.setHeader('Access-Control-Allow-Origin','*');
+    res.header('Access-Control-Allow-Origin', '*');
     res.removeHeader('x-powered-by');
     //set the allowed HTTP methods to be requested
-    res.setHeader('Access-Control-Allow-Methods','POST', 'GET');
+    res.header(`Access-Control-Allow-Methods`, `GET,PATCH,POST,DELETE`);
     //headers clients can use in their requests
-    res.setHeader('Access-Control-Allow-Headers','Content-Type');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
     //allow request to continue and be handled by routes
     next();
-  });
+});
 
 const storage = multer.diskStorage({
     destination: (_, __, callback) => {
