@@ -10,9 +10,7 @@ import { handleValidationErrors} from './utils/insex.js'
 import { UserController, PostController} from './controllers/index.js';
 
 import CheckAuth from './middleware/CheckAuth.js';
-mongoose.connect(
-    process.env.MONGODB_URI
-).then(() => console.log('DB ok'))
+mongoose.connect( process.env.MONGODB_URI).then(() => console.log('DB ok'))
     .catch(err => console.log('DB error', err))
 
 const app = express();
