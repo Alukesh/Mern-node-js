@@ -11,7 +11,7 @@ import { UserController, PostController} from './controllers/index.js';
 
 import CheckAuth from './middleware/CheckAuth.js';
 mongoose.connect(
-    'mongodb+srv://akenzhebaev422:4444@cluster0.4jdzcax.mongodb.net/blog?retryWrites=true&w=majority'
+    process.env.MONGODB_URI
 ).then(() => console.log('DB ok'))
     .catch(err => console.log('DB error', err))
 
@@ -51,7 +51,7 @@ app.delete('/posts/:id', CheckAuth, PostController.remove)
 app.patch('/posts/:id', CheckAuth, postCreateValidation, PostController.update)
 
 
-app.listen(4444, (err) => {
+app.listen(process.env.PORT || 4444, (err) => {
     if (err) {
         return console.log('Server bad', err);
     }
