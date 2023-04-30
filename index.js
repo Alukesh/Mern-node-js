@@ -16,7 +16,21 @@ mongoose.connect(process.env.MONGODB_URI).then(() => console.log('DB ok'))
 const app = express();
 app.use(express.json())
 app.use('/uploads', express.static('uploads'))
-app.use(cors())
+const corsOpts = {
+    origin: '*',
+  
+    methods: [
+      'GET',
+      'POST',
+      'PATCH',
+      'DELETE',
+    ],
+  
+    allowedHeaders: [
+      'Content-Type',
+    ],
+  };
+app.use(cors(corsOpts))
 app.use(function(req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
